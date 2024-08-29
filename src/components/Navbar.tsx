@@ -2,8 +2,7 @@
 import styled from 'styled-components';
 import logo from '../assets/logo-white.png';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../hooks';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { User } from '../types';
 import { useAppSelector } from '../redux/store';
 import Avatar from './Avatar';
@@ -14,6 +13,12 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../services/auth';
 import './navbar/Navbar.css';
+import Flag from 'react-world-flags';
+import { useAuth, useFetchProfile } from '../hooks';
+import { config } from '../config/config';
+import { CountryContext } from '../contexts';
+import CountrySelect from './navbar/CountrySelect';
+import countries from '../media/country-currency.json';
 
 const Image = styled.img`
     width: 60px;
@@ -44,6 +49,9 @@ const Navbar: React.FC<{ search?: boolean }> = ({ search = false }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
     const { data } = useAppSelector((state) => state.profile);
+    const { country, setCountry } = useContext(CountryContext);
+
+    useFetchProfile();
 
     const options = [
         {
@@ -78,20 +86,20 @@ const Navbar: React.FC<{ search?: boolean }> = ({ search = false }) => {
         setOpen(true);
     };
 
-    // const handleClose = async (value: string) => {
-    //     setOpen(false);
-    //     setCountry(value || 'us');
-    //     fetch(`${config.API_URL}/country/${value || 'us'}`, {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => console.log(data))
-    //         .catch((err) => console.log(err));
-    // };
+    const handleClose = async (value: string) => {
+        setOpen(false);
+        setCountry(value || 'us');
+        fetch(`${config.API_URL}/country/${value || 'us'}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err));
+    };
 
     return (
         <nav className="navbar navbar-expand-lg bg-light">
@@ -156,7 +164,7 @@ const Navbar: React.FC<{ search?: boolean }> = ({ search = false }) => {
                         )}
 
                         <button className="navbar-item language-button" onClick={handleClickOpen}>
-                            {/* <Flag
+                            <Flag
                                 code={country}
                                 fallback={
                                     <img
@@ -165,7 +173,7 @@ const Navbar: React.FC<{ search?: boolean }> = ({ search = false }) => {
                                         alt="language icon"
                                     />
                                 }
-                            /> */}
+                            />
                         </button>
                         {auth.userType !== User.GUEST && data && (
                             <div className="navbar-item">
@@ -178,7 +186,7 @@ const Navbar: React.FC<{ search?: boolean }> = ({ search = false }) => {
                     </ul>
                 </div>
             </div>
-            {/* <CountrySelect selectedValue={country} open={open} onClose={handleClose} countries={countries} /> */}
+            <CountrySelect selectedValue={country} open={open} onClose={handleClose} countries={countries} />
         </nav>
     );
 };

@@ -1,47 +1,44 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchProfile } from '../../../services/profile';
 import { Profile } from '../../../types';
 
-const getProfile = createAsyncThunk('profile/getProfile', async (accessToken: string, thunkapi) => {
-    try {
-        const data = await fetchProfile(accessToken);
-        return data;
-    } catch (error) {
-        return thunkapi.rejectWithValue(error);
+const getProfile = createAsyncThunk<Profile, string>('profile/getProfile', async (accessToken: string, thunkAPI) => {
+    const response = (await fetchProfile(accessToken)) as Response;
+    if (!response.ok) { 
+        return thunkAPI.rejectWithValue(await response.json());
     }
+    return (await response.json()) as Profile;
 });
 
 interface ProfileState {
-    data: Profile | null;
+    data: null | Profile; // TODO: Add other user types
     loading: boolean;
-    error: string | null;
+    error: null | any;
 }
-
-const initialState = {
+const initialState: ProfileState = {
     data: null,
     loading: false,
     error: null,
-} as ProfileState;
+};
 
 const profileSlice = createSlice({
     name: 'profile',
-    initialState,
+    initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getProfile.pending, (state) => {
             state.loading = true;
-            state.error = null;
+            state.data = null;
         });
-
-        builder.addCase(getProfile.fulfilled, (state, action: PayloadAction<Profile>) => {
-            state.loading = false;
+        builder.addCase(getProfile.fulfilled, (state = initialState, action: PayloadAction<Profile>) => {
             state.data = action.payload;
-        });
-
-        builder.addCase(getProfile.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+        });
+        builder.addCase(getProfile.rejected, (state, action: PayloadAction<any>) => {
+            state.loading = false;
+            state.error = action.payload;
         });
     },
 });
