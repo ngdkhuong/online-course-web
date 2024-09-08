@@ -12,7 +12,7 @@ const useFetchAllCourses = () => {
 
     useEffect(() => {
         dispatch(getCourseList(searchParams));
-    }, [searchParams, country]);
+    }, [searchParams, country, dispatch]);
 };
 
 export default useFetchAllCourses;

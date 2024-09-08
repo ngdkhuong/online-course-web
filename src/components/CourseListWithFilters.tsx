@@ -23,8 +23,8 @@ const CoursesListContainer = styled.div`
 const CoursesListWithFilters: React.FC<{
     courses: ICourseProps[];
     addCourse?: boolean;
-    showStatus?: boolean;
-    showPrice?: boolean;
+    showStatus: boolean;
+    showPrice: boolean;
     showBrowseBy?: boolean;
 }> = ({ courses, showPrice, showStatus, showBrowseBy = true }) => {
     return (

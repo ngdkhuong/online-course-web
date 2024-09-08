@@ -6,7 +6,7 @@ const useFetchSubjects = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getSubjects());
-    }, []);
+    }, [dispatch]);
 };
 
 export default useFetchSubjects;

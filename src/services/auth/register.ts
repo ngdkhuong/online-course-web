@@ -1,19 +1,15 @@
 import axios from 'axios';
-import { config } from '../../config/config';
 
-const refresh = (): Promise<{
-    accessToken: string;
-    userType: number;
-}> => {
-    const REFRESH_URL = `${config.API_URL}/auth/refresh`;
+import { config } from '../../config/config';
+import { RegistrationData } from '../../types';
+
+const register = (data: RegistrationData): Promise<{ accessToken: string; userType: number }> => {
+    const REGISTER_URL = `${config.API_URL}/individual-trainees`;
 
     return new Promise((resolve, reject) => {
         axios
-            .get(REFRESH_URL, {
-                withCredentials: true,
-            })
+            .post(REGISTER_URL, data)
             .then((res) => {
-                console.log(res);
                 resolve(res.data);
             })
             .catch((err) => {
@@ -22,4 +18,4 @@ const refresh = (): Promise<{
     });
 };
 
-export default refresh;
+export default register;

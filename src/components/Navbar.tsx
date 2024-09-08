@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
 import logo from '../assets/logo-white.png';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';

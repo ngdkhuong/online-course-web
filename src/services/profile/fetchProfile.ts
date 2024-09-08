@@ -1,6 +1,7 @@
 import { config } from '../../config/config';
+import { Profile } from '../../types';
 
-const fetchProfile = (accessToken: string) => {
+const fetchProfile = (accessToken: string): Promise<Profile> => {
     const API_URL = `${config.API_URL}/me/profile`;
 
     return new Promise((resolve, reject) => {

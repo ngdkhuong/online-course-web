@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { config } from '../../config/config';
 
 const login = (email: string, password: string): Promise<{ accessToken: string; userType: number }> => {
-    const LOGIN_URL = `/auth/login`;
+    const LOGIN_URL = `${config.API_URL}/auth/login`;
 
     return new Promise((resolve, reject) => {
         axios

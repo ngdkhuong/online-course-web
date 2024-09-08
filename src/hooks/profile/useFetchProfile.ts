@@ -12,7 +12,7 @@ const useFetchProfile = () => {
         if (auth.userType !== User.GUEST && auth.accessToken !== null) {
             dispatch(getProfile(auth.accessToken));
         }
-    }, []);
+    }, [auth, dispatch]);
 };
 
 export default useFetchProfile;

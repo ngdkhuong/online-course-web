@@ -8,10 +8,13 @@ import Review from './Review';
 import Course from './Course';
 import CourseStatus from './enums/CourseStatus';
 // import { ReportStatus, ReportType, UserType } from './enums';
+import { LoginData, RegistrationData } from './auth';
 
 export {
     UserType as User,
     CourseStatus,
+    type RegistrationData,
+    type LoginData,
     type Country,
     type Course,
     type Profile,

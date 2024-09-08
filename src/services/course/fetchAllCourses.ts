@@ -2,9 +2,9 @@ import axios from 'axios';
 
 import { config } from '../../config/config';
 
-const fetchAllCourses = (searchParams: URLSearchParams): Promise<never[]> => {
-    const FILTERS = searchParams.toString();
-    const API_URL = `${config.API_URL}/courses?${FILTERS}`;
+const fetchAllCourses = (searchParams?: URLSearchParams): Promise<never[]> => {
+    const FILTERS = searchParams?.toString();
+    const API_URL = `${config.API_URL}/courses${FILTERS ? `?${FILTERS}` : ''}`;
     return new Promise((resolve, reject) => {
         axios
             .get(API_URL)

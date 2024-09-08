@@ -39,7 +39,7 @@ const Login: React.FC = () => {
 
         validateFormData(formData, validationRules)
             .then(async (data) => {
-                const validatedData = data as unknown as LoginData;
+                const validatedData = data as LoginData;
 
                 await login(validatedData.email, validatedData.password)
                     .then((data: any) => {
